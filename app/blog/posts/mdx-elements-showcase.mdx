@@ -1,0 +1,205 @@
+---
+title: 'MDX Elements Showcase: A Complete Guide'
+publishedAt: '2026-01-11'
+summary: 'A comprehensive demonstration of all MDX elements supported in our blog, including typography, code blocks, tables, images, and more.'
+---
+
+This article showcases all the MDX elements you can use in your blog posts. Use this as a reference when writing your own content.
+
+## Typography Basics
+
+### Paragraphs and Inline Elements
+
+Regular paragraphs are the foundation of any article. You can use **bold text** for emphasis, *italic text* for subtle emphasis, or ***bold and italic*** together. You can also use ~~strikethrough~~ for corrections.
+
+Here's some `inline code` that stands out from regular text. It's perfect for mentioning variable names like `useState` or file names like `package.json`.
+
+Links are styled beautifully: check out [Tailwind CSS](https://tailwindcss.com) or [Next.js](https://nextjs.org) documentation.
+
+### Headings Hierarchy
+
+We support multiple heading levels. H2 gets a nice border underneath, while H3 and H4 are more subtle:
+
+#### This is an H4 Heading
+
+Use H4 for smaller subsections within your content.
+
+## Code Blocks
+
+### JavaScript Example
+
+```javascript
+// A simple React component with hooks
+import { useState, useEffect } from 'react'
+
+export function Counter({ initialCount = 0 }) {
+  const [count, setCount] = useState(initialCount)
+
+  useEffect(() => {
+    document.title = `Count: ${count}`
+  }, [count])
+
+  return (
+    <div className="flex items-center gap-4">
+      <button onClick={() => setCount(c => c - 1)}>-</button>
+      <span className="text-2xl font-bold">{count}</span>
+      <button onClick={() => setCount(c => c + 1)}>+</button>
+    </div>
+  )
+}
+```
+
+### TypeScript with Types
+
+```typescript
+interface User {
+  id: string
+  name: string
+  email: string
+  role: 'admin' | 'user' | 'guest'
+  createdAt: Date
+}
+
+async function fetchUser(id: string): Promise<User | null> {
+  const response = await fetch(`/api/users/${id}`)
+  
+  if (!response.ok) {
+    return null
+  }
+  
+  return response.json()
+}
+```
+
+### Shell Commands
+
+```bash
+# Install dependencies
+pnpm add tailwindcss @tailwindcss/typography
+
+# Run development server
+pnpm dev
+
+# Build for production
+pnpm build
+```
+
+### JSON Configuration
+
+```json
+{
+  "name": "my-blog",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^16.0.0",
+    "react": "^19.0.0"
+  }
+}
+```
+
+## Lists
+
+### Unordered Lists
+
+Here are some key features of our blog:
+
+- Beautiful typography with Tailwind CSS
+- Full dark mode support
+- Syntax highlighting for code blocks
+- Auto-generated table of contents
+- Responsive design for all devices
+
+Nested lists work too:
+
+- Frontend Technologies
+  - React and Next.js
+  - Tailwind CSS
+  - TypeScript
+- Backend Technologies
+  - Node.js
+  - PostgreSQL
+  - Redis
+
+### Ordered Lists
+
+Follow these steps to set up your project:
+
+1. Clone the repository
+2. Install dependencies with `pnpm install`
+3. Copy `.env.example` to `.env.local`
+4. Configure your environment variables
+5. Run `pnpm dev` to start developing
+
+## Blockquotes
+
+> "Any fool can write code that a computer can understand. Good programmers write code that humans can understand."
+> 
+> — Martin Fowler
+
+Blockquotes are perfect for highlighting important information or citations from other sources.
+
+## Tables
+
+Tables are great for comparing data or presenting structured information:
+
+| Feature | Free Plan | Pro Plan | Enterprise |
+|---------|-----------|----------|------------|
+| Users | 1 | 10 | Unlimited |
+| Storage | 5 GB | 100 GB | 1 TB |
+| API Calls | 1,000/day | 50,000/day | Unlimited |
+| Support | Community | Email | 24/7 Phone |
+| Price | $0 | $29/mo | Custom |
+
+Another example with different data:
+
+| HTTP Method | Endpoint | Description |
+|-------------|----------|-------------|
+| GET | `/api/users` | List all users |
+| POST | `/api/users` | Create a new user |
+| GET | `/api/users/:id` | Get user by ID |
+| PUT | `/api/users/:id` | Update user |
+| DELETE | `/api/users/:id` | Delete user |
+
+## Horizontal Rules
+
+Use horizontal rules to separate major sections:
+
+---
+
+## Advanced Elements
+
+### Keyboard Shortcuts
+
+Press <kbd>Cmd</kbd> + <kbd>K</kbd> to open the command palette, or <kbd>Ctrl</kbd> + <kbd>S</kbd> to save.
+
+### Highlighted Text
+
+You can use <mark>highlighted text</mark> to draw attention to specific words or phrases in your content.
+
+### Abbreviations
+
+The <abbr title="World Wide Web Consortium">W3C</abbr> maintains standards for the web, including <abbr title="HyperText Markup Language">HTML</abbr> and <abbr title="Cascading Style Sheets">CSS</abbr>.
+
+## Images
+
+Images are displayed with rounded corners and a subtle shadow:
+
+![Next.js Logo](https://assets.vercel.com/image/upload/v1662130559/nextjs/Icon_dark_background.png)
+
+## Conclusion
+
+This showcase demonstrates all the MDX elements available for your blog posts. Mix and match these elements to create engaging, well-structured content that's easy to read and navigate.
+
+Remember:
+- Use headings to create a clear hierarchy
+- Break up long text with lists and code examples
+- Use tables for structured data
+- Add images to illustrate concepts
+- Keep paragraphs focused and concise
+
+Happy writing! 🚀

@@ -1,0 +1,622 @@
+---
+title: "PostHog vs Google Analytics 2025: Product Metrics Guide for SaaS Teams"
+description: "Compare PostHog and GA4 for SaaS product analytics. Learn which metrics to track, GDPR compliance, and step-by-step PostHog setup for PMs and designers."
+publishedAt: 2026-01-07
+keywords: ["posthog vs google analytics", "GA4 alternatives", "product analytics SaaS", "GDPR compliant analytics", "product metrics tracking", "user retention analytics", "SaaS metrics dashboard"]
+---
+
+## Introduction
+
+You open Google Analytics. You see traffic numbers. But can you answer: "Why did users stop using our new feature?" or "Which users are about to churn*?"
+
+If you're a PM or designer working on a SaaS product, website traffic isn't what keeps you up at night. You need to understand user behavior inside your product. That's where Google Analytics falls short—and where tools like PostHog shine.
+
+**Who this is for:**
+
+- Junior Product Managers new to analytics
+- UX and Product Designers tracking feature adoption
+- Early-stage SaaS teams choosing their analytics stack
+
+**What you'll learn:**
+
+- Why GA4 frustrates product teams (and the GDPR* risks in 2025)
+- How PostHog solves common product analytics problems
+- Every metric you should track—with exact events and dashboards
+- A glossary of every industry term marked with (*)
+
+---
+
+## Why GA4 Falls Short for Product Teams in 2025
+
+Google Analytics 4 was built for marketers tracking ad campaigns. If you're building a SaaS product, you'll hit walls fast.
+
+### Session-Based vs Event-Based Tracking: What's the Difference?
+
+Think of it this way:
+
+**Session-based** (old Universal Analytics): Tracks visits as chunks. "User came, viewed 3 pages, left." Good for blogs. Bad for apps.
+
+**Event-based** (GA4 and PostHog): Tracks actions. "User clicked 'Create Project,' then 'Invite Team,' then 'Upgrade Plan.'" Good for understanding product usage.
+
+GA4 moved to event-based tracking—but it's complicated to set up. You need Google Tag Manager, custom configurations, and engineering time for anything beyond pageviews.
+
+### What GA4 Can't Do Well
+
+| Product Need | GA4 Limitation |
+|---|---|
+| **User-level tracking** | Anonymous by default. Can't tie events to individual users or companies. |
+| **Retention* analysis** | No native retention cohorts*. Requires BigQuery and SQL skills. |
+| **Funnel* visualization** | Limited to 10 steps. No branching paths. |
+| **Session replay** | Not available. Need third-party tools. |
+| **Feature flags* and A/B testing** | Not included. Requires Google Optimize (discontinued) or other tools. |
+| **Self-hosting** | Impossible. Data goes to Google servers. |
+
+### The Learning Curve Problem
+
+GA4's interface is notoriously difficult. Reports that took seconds in Universal Analytics now require custom exploration builds. As one expert put it: "GA4 feels like it was designed with a data engineer's mindset, not a marketer's."
+
+Data retention is capped at 14 months. Custom dimensions are limited to 50. If you hit these ceilings, your only option is archiving—there's no way to delete unused dimensions.
+
+---
+
+## GA4 GDPR Compliance 2025: The Legal Risk You Can't Ignore
+
+Here's the uncomfortable truth: using Google Analytics may be illegal in your country.
+
+### Current EU Rulings on Google Analytics
+
+By mid-2025, **six national data protection authorities** have ruled against GA4:
+
+| Country | Status | Details |
+|---|---|---|
+| **Austria** | Banned | First ruling, 2022. Set precedent. |
+| **France** | Banned | CNIL ruled transfers violate GDPR. |
+| **Italy** | Banned | Called transfers "unlawful." |
+| **Sweden** | Banned + Fined | First €1 million fine for GA use. |
+| **Denmark** | Warning issued | DPA published guidance against GA. |
+| **Norway** | Banned (Jan 2025) | Final decision published. |
+| **Finland** | Banned | Consistent with other DPAs. |
+
+### Why This Happens
+
+The problem isn't analytics—it's data transfer. When you use GA4:
+
+1. User data (IP addresses, browser fingerprints) goes to Google's US servers
+2. US surveillance laws allow government access to this data
+3. GDPR requires "adequate protection" for EU citizens' data
+4. Courts ruled that Google's protections aren't adequate
+
+### The EU-US Data Privacy Framework (DPF) Problem
+
+In 2023, the EU and US created a new data transfer agreement. Google certified under it. Problem solved?
+
+Not quite. In early 2025, the framework's oversight board was gutted. Privacy advocates expect legal challenges. Max Schrems (who killed two previous frameworks) recommends businesses "have a 'host in Europe' contingency plan."
+
+### Risk Summary for Your Team
+
+| Risk Level | Situation |
+|---|---|
+| **High** | EU-based company using GA4 without consent management |
+| **Medium** | EU-based company with proper consent but default GA4 config |
+| **Lower** | Using EU-hosted alternative or self-hosted solution |
+| **Lowest** | No EU users at all |
+
+If you have EU users, the safest path is an analytics tool that keeps data in Europe—or on your own servers.
+
+---
+
+## PostHog as a GA4 Alternative: Built for Product Teams
+
+PostHog isn't just "Google Analytics but different." It's a complete product analytics platform designed for teams building software.
+
+### Core Advantages for SaaS Products
+
+**1. Event-Based by Design**
+
+PostHog uses autocapture—it automatically tracks clicks, pageviews, and form submissions without manual tagging. When you need custom events, the SDK is straightforward:
+
+```javascript
+posthog.capture('feature_used', {
+  feature_name: 'dark_mode',
+  user_plan: 'pro'
+})
+```
+
+**2. User-Level Tracking**
+
+Every visitor can become a person profile. When someone signs up, all their anonymous history merges into one identified user. You can view a complete timeline across sessions and devices.
+
+**3. Built-In Product Tools**
+
+PostHog includes:
+
+- **Session replay**: Watch real users interact with your product
+- **Feature flags**: Roll out features to specific user segments
+- **A/B testing (Experiments)**: Test changes with statistical significance
+- **Surveys**: Collect NPS* and feedback in-product
+- **Heatmaps***: See where users click on any page
+
+**4. EU Hosting and Self-Hosting**
+
+Choose PostHog Cloud EU (Frankfurt servers) or self-host on your own infrastructure. Your data never touches US servers if you don't want it to.
+
+### Feature Comparison: GA4 vs PostHog
+
+| Feature | GA4 | PostHog |
+|---|---|---|
+| **Event tracking** | Manual setup required | Autocapture + custom |
+| **User identification** | Anonymous only | Full user profiles |
+| **Retention charts** | Requires BigQuery | Native, visual |
+| **Funnels** | 10 steps max | Unlimited steps |
+| **Session replay** | ❌ | ✅ |
+| **Feature flags** | ❌ | ✅ |
+| **A/B testing** | ❌ (Optimize discontinued) | ✅ |
+| **Surveys** | ❌ | ✅ |
+| **Heatmaps** | ❌ | ✅ |
+| **EU data hosting** | ❌ | ✅ |
+| **Self-hosting** | ❌ | ✅ |
+| **SQL access** | BigQuery (extra cost) | Built-in (HogQL) |
+| **Free tier** | Limited | 1M events/month |
+| **B2B group analytics** | ❌ | ✅ (company-level) |
+
+### Pricing Reality
+
+GA4 is "free" until you need to export data or exceed thresholds. Then GA360 starts at $50,000/year.
+
+PostHog gives you 1 million events free monthly. After that, it's usage-based: $0.000031 per event, dropping as volume increases. Most startups pay nothing for their first year.
+
+---
+
+## Product Metrics to Track in PostHog: The Complete Guide
+
+Now the practical part. Here's every metric a SaaS product team should track, with exact PostHog implementation.
+
+### AARRR Framework: The Pirate Metrics
+
+AARRR* stands for Acquisition, Activation, Retention, Revenue, and Referral—the five stages of the user lifecycle. Track these to understand your growth funnel*.
+
+---
+
+### Acquisition
+
+| | |
+|---|---|
+| **What it measures** | How users discover and sign up for your product |
+| **Why it matters** | Tells you which channels bring users worth keeping |
+| **When to check** | Weekly |
+| **Warning sign** | High traffic but low signups, or expensive channels with poor retention |
+
+**How to track in PostHog:**
+
+- Events to capture: `$pageview` (automatic), `user_signed_up`
+- Properties: `utm_source`, `utm_medium`, `utm_campaign`, `referrer`
+- Visualization: **Trend** chart filtered by signup event, broken down by UTM source
+- Template: Create a dashboard with signup trends by channel. Compare Week 1 retention across acquisition sources.
+
+---
+
+### Activation
+
+| | |
+|---|---|
+| **What it measures** | Whether new users reach their "aha moment*"—the point they experience core value |
+| **Why it matters** | Users who activate are 3-5x more likely to retain. This is your make-or-break moment. |
+| **When to check** | Weekly |
+| **Warning sign** | Less than 40% of signups completing your activation milestone |
+
+**How to track in PostHog:**
+
+- Events to capture: `onboarding_started`, `onboarding_step_completed`, `first_value_action` (define based on your product)
+- Properties: `step_number`, `time_since_signup`, `user_role`
+- Visualization: **Funnel** from signup → each onboarding step → first value action
+- Template: 
+
+```
+Funnel Steps:
+1. user_signed_up
+2. onboarding_completed
+3. first_project_created (or your key action)
+4. invited_team_member
+```
+
+Use Session Replay to watch users who drop off at each step.
+
+---
+
+### Retention
+
+| | |
+|---|---|
+| **What it measures** | How many users return after their first visit/action |
+| **Why it matters** | Retention is the clearest signal of product-market fit. A leaky bucket can't be filled. |
+| **When to check** | Weekly (for early signals), Monthly (for trends) |
+| **Warning sign** | Week 1 retention below 20%, or declining retention over time |
+
+**How to track in PostHog:**
+
+- Events to capture: `session_started` or your core usage event (e.g., `document_edited`, `report_generated`)
+- Properties: `user_id`, `session_count`, `days_since_signup`
+- Visualization: **Retention** chart (cohort-based)
+- Template:
+
+```
+Retention Insight:
+- First event: user_signed_up
+- Return event: Any core action (or specific feature)
+- Period: Day / Week / Month
+```
+
+Look for the "flattening point" where retention stabilizes—that's your product's natural retention floor.
+
+---
+
+### Revenue
+
+| | |
+|---|---|
+| **What it measures** | Users converting to paid, upgrading, or generating revenue |
+| **Why it matters** | Revenue validates that users find enough value to pay |
+| **When to check** | Weekly for trends, Daily during launches |
+| **Warning sign** | Flat or declining MRR* despite growing signups |
+
+**How to track in PostHog:**
+
+- Events to capture: `subscription_started`, `plan_upgraded`, `plan_downgraded`, `subscription_cancelled`
+- Properties: `plan_type`, `price`, `billing_period`, `previous_plan`
+- Visualization: **Trend** chart of revenue events, **Funnel** from trial → paid
+- Template:
+
+```
+Revenue Funnel:
+1. trial_started
+2. trial_day_3_active
+3. trial_day_7_active
+4. subscription_started
+
+Break down by: plan_type, acquisition_source
+```
+
+---
+
+### Referral
+
+| | |
+|---|---|
+| **What it measures** | Users recommending your product to others |
+| **Why it matters** | Referrals are your lowest-cost, highest-quality acquisition channel |
+| **When to check** | Monthly |
+| **Warning sign** | NPS below 30, or referral events declining |
+
+**How to track in PostHog:**
+
+- Events to capture: `referral_link_shared`, `referral_invite_sent`, `referred_user_signed_up`
+- Properties: `referrer_user_id`, `share_channel` (email, link, social), `referral_code`
+- Visualization: **Trend** of referral events, **Funnel** from share → signup → activation
+- Template: Create a cohort of "referrers" (users who have shared). Compare their retention and LTV* to non-referrers.
+
+---
+
+### B2B SaaS Revenue Metrics
+
+These metrics matter for subscription businesses tracking financial health.
+
+---
+
+### MRR (Monthly Recurring Revenue)
+
+| | |
+|---|---|
+| **What it measures** | Predictable monthly revenue from subscriptions |
+| **Why it matters** | Your baseline for forecasting growth, hiring, and investor conversations |
+| **When to check** | Daily |
+| **Warning sign** | MRR growth slowing while CAC* stays constant |
+
+**How to track in PostHog:**
+
+- Events to capture: `subscription_started`, `subscription_renewed`, `subscription_cancelled`, `plan_changed`
+- Properties: `mrr_value`, `plan_type`, `change_type` (new, expansion, contraction, churn)
+- Visualization: **Trend** with formula: Sum of `mrr_value` where event = subscription events
+- Template: Build a dashboard showing New MRR + Expansion MRR - Churned MRR = Net New MRR
+
+---
+
+### ARR (Annual Recurring Revenue)
+
+| | |
+|---|---|
+| **What it measures** | MRR × 12. Your annualized revenue run rate. |
+| **Why it matters** | The standard metric for SaaS valuation and investor reporting |
+| **When to check** | Monthly |
+| **Warning sign** | ARR growth rate declining quarter over quarter |
+
+**Formula:** `ARR = MRR × 12`
+
+Track in PostHog using the same events as MRR, with a formula insight multiplying by 12.
+
+---
+
+### Churn Rate
+
+| | |
+|---|---|
+| **What it measures** | Percentage of customers (or revenue) lost in a period |
+| **Why it matters** | High churn means your product has a "leaky bucket"—you can't grow sustainably |
+| **When to check** | Monthly |
+| **Warning sign** | Monthly churn above 5% for SMB, above 2% for enterprise |
+
+**How to track in PostHog:**
+
+- Events to capture: `subscription_cancelled`, `account_deleted`
+- Properties: `cancellation_reason`, `plan_type`, `tenure_months`, `last_active_date`
+- Visualization: **Trend** of churn events / total active users at period start
+- Template:
+
+```
+Churn Analysis:
+1. Create cohort: Users who cancelled in last 30 days
+2. Compare behavior to retained users
+3. Use Correlation Analysis to find churn predictors
+```
+
+**Churn formula:** `Churn Rate = (Customers lost in period / Customers at start of period) × 100`
+
+---
+
+### LTV (Lifetime Value)
+
+| | |
+|---|---|
+| **What it measures** | Total revenue expected from a customer over their entire relationship |
+| **Why it matters** | Tells you how much you can afford to spend acquiring customers |
+| **When to check** | Monthly |
+| **Warning sign** | LTV declining, or LTV:CAC ratio below 3:1 |
+
+**Formula:** `LTV = ARPU × Customer Lifetime`
+
+Or: `LTV = ARPU / Monthly Churn Rate`
+
+**How to track in PostHog:**
+
+- Events to capture: All revenue events with `revenue_amount` property
+- Visualization: **Trend** of cumulative revenue per user cohort over time
+- Template: Use cohort analysis to track revenue from each signup month over 12+ months
+
+---
+
+### CAC (Customer Acquisition Cost)
+
+| | |
+|---|---|
+| **What it measures** | Average cost to acquire one paying customer |
+| **Why it matters** | If CAC exceeds LTV, you lose money on every customer |
+| **When to check** | Monthly |
+| **Warning sign** | CAC increasing while conversion rates stay flat |
+
+**Formula:** `CAC = Total Sales & Marketing Spend / New Customers Acquired`
+
+PostHog tracks the "New Customers Acquired" numerator. For full CAC, combine with your finance data in a spreadsheet or data warehouse.
+
+---
+
+### NRR (Net Revenue Retention)
+
+| | |
+|---|---|
+| **What it measures** | Revenue retained from existing customers, including expansions and contractions |
+| **Why it matters** | NRR above 100% means you grow even without new customers. This is the gold standard. |
+| **When to check** | Monthly |
+| **Warning sign** | NRR below 100% (you're shrinking without new sales) |
+
+**Formula:** `NRR = (Starting MRR + Expansion - Contraction - Churn) / Starting MRR × 100`
+
+**How to track in PostHog:**
+
+- Events to capture: `plan_upgraded` (expansion), `plan_downgraded` (contraction), `subscription_cancelled` (churn)
+- Properties: `mrr_change_amount`, `previous_mrr`, `new_mrr`
+- Visualization: **Trend** with formula calculating NRR monthly
+- Template: Create a monthly cohort showing starting MRR and how it changes over 12 months
+
+**Benchmark:** B2B SaaS companies should aim for NRR above 100%. Best-in-class companies hit 120%+.
+
+---
+
+### Product Health Metrics
+
+These metrics tell you if your product is building habits and delivering value.
+
+---
+
+### DAU/MAU (Daily/Monthly Active Users)
+
+| | |
+|---|---|
+| **What it measures** | Count of unique users active in a day/month |
+| **Why it matters** | The foundation for understanding product scale and growth |
+| **When to check** | Daily |
+| **Warning sign** | Declining DAU while MAU stays flat (engagement dropping) |
+
+**How to track in PostHog:**
+
+- Events to capture: Any activity event, or use `$pageview`
+- Visualization: **Trend** with "Unique users" count, daily and monthly views
+- Template: PostHog has built-in DAU/MAU tracking in web analytics dashboard
+
+---
+
+### Stickiness (DAU/MAU Ratio)
+
+| | |
+|---|---|
+| **What it measures** | What percentage of monthly users engage daily—how "habit-forming" your product is |
+| **Why it matters** | High stickiness = users can't live without your product |
+| **When to check** | Weekly |
+| **Warning sign** | Ratio below 13% (SaaS average), or declining over time |
+
+**Formula:** `Stickiness = DAU / MAU × 100`
+
+**How to track in PostHog:**
+
+- Visualization: **Stickiness** insight (built-in tool)
+- Or: **Trend** with formula mode: Series A (DAU) / Series B (MAU)
+- Template:
+
+```
+Stickiness Insight:
+- Event: Your core usage event
+- Shows: How many days users performed action in the period
+```
+
+**Benchmarks:**
+- Social apps (Facebook): 68%
+- B2B SaaS average: 13%
+- Good for SaaS: 20%+
+
+---
+
+### Feature Adoption Rate
+
+| | |
+|---|---|
+| **What it measures** | Percentage of users who try and continue using a specific feature |
+| **Why it matters** | Tells you if features you build actually deliver value |
+| **When to check** | After every feature launch |
+| **Warning sign** | Low adoption of features you expected to be popular |
+
+**How to track in PostHog:**
+
+- Events to capture: `feature_viewed`, `feature_used`, `feature_used_again`
+- Properties: `feature_name`, `user_tenure`, `user_plan`
+- Visualization: **Funnel** from feature discovery → first use → repeat use
+- Template:
+
+```
+Feature Adoption Funnel:
+1. feature_available (users who could see it)
+2. feature_clicked
+3. feature_completed_action
+4. feature_used_week_2 (repeat usage)
+```
+
+Use feature flags to roll out to 10% of users first and measure adoption before full release.
+
+---
+
+### Cohort Analysis
+
+| | |
+|---|---|
+| **What it measures** | How different groups of users (by signup date, source, plan) behave over time |
+| **Why it matters** | Reveals if your product is improving—newer cohorts should retain better |
+| **When to check** | Monthly |
+| **Warning sign** | Newer cohorts performing worse than older ones |
+
+**How to track in PostHog:**
+
+- Create cohorts by: Signup week, acquisition source, plan type, company size
+- Visualization: **Retention** chart with cohort breakdown
+- Template:
+
+```
+Cohort Comparison:
+1. Create cohort: Users signed up in January
+2. Create cohort: Users signed up in February
+3. Compare Week 4 retention between cohorts
+```
+
+This shows if product changes are actually improving retention.
+
+---
+
+## Getting Started: Your First 3 Metrics
+
+Don't try to track everything at once. Start here:
+
+### Week 1: Activation Funnel
+
+1. Define your "aha moment" (the first valuable action)
+2. Create a funnel from signup → aha moment
+3. Find where users drop off
+4. Watch session replays of users who didn't activate
+
+### Week 2: Retention Curve
+
+1. Set up a retention insight with your core usage event
+2. Look for the "flattening point"
+3. Create cohorts to compare different user segments
+4. Identify what activated users do differently
+
+### Week 3: Feature Adoption
+
+1. Pick one key feature
+2. Track views → first use → repeat use
+3. Use feature flags to test with a subset of users
+4. Measure impact on retention
+
+### Next Steps
+
+- Add revenue tracking events once you have paid users
+- Build a dashboard combining all AARRR metrics
+- Set up alerts for significant metric drops
+- Share dashboards with your team for alignment
+
+**CTA:** [Start with PostHog's free tier](https://posthog.com) (1M events/month). No credit card required.
+
+---
+
+## Glossary
+
+All terms marked with (*) in this article, alphabetized:
+
+**AARRR** — A framework for tracking the user lifecycle: Acquisition, Activation, Retention, Revenue, Referral. Also called "Pirate Metrics" because it sounds like "Arrr!"
+
+**Aha moment** — The point when a user first experiences the core value of your product. Users who reach this moment are significantly more likely to retain.
+
+**ARR (Annual Recurring Revenue)** — Your MRR multiplied by 12. The standard metric for measuring and comparing SaaS company size.
+
+**CAC (Customer Acquisition Cost)** — The total sales and marketing spend divided by the number of new customers acquired. Tells you how much it costs to get each customer.
+
+**Churn** — When a customer stops using (and paying for) your product. Churn rate is the percentage of customers lost in a given period.
+
+**Cohort** — A group of users who share a common characteristic, typically signup date. Used to compare how different groups behave over time.
+
+**DAU (Daily Active Users)** — The count of unique users who were active in your product on a given day.
+
+**Feature flags** — A technique for enabling or disabling features for specific users without deploying new code. Used for gradual rollouts and A/B testing.
+
+**Funnel** — A visualization of users moving through a series of steps (like signup → onboarding → first value action). Shows where users drop off.
+
+**GDPR (General Data Protection Regulation)** — EU law governing data privacy. Requires explicit consent for data collection and restricts transferring EU citizens' data outside Europe.
+
+**Heatmaps** — Visual representations of where users click, scroll, or hover on a page. Warmer colors indicate more activity.
+
+**LTV (Lifetime Value)** — The total revenue you expect to earn from a customer over their entire relationship with your company.
+
+**MAU (Monthly Active Users)** — The count of unique users who were active in your product during a given month.
+
+**MRR (Monthly Recurring Revenue)** — The predictable revenue you receive each month from subscriptions. The foundation of SaaS financial metrics.
+
+**NPS (Net Promoter Score)** — A customer satisfaction metric based on asking "How likely are you to recommend us?" on a 0-10 scale. Scores 9-10 are Promoters, 0-6 are Detractors. NPS = % Promoters - % Detractors.
+
+**NRR (Net Revenue Retention)** — The percentage of revenue retained from existing customers, including expansions and subtracting contractions and churn. Above 100% means you grow from existing customers alone.
+
+**Retention** — The ability to keep users coming back over time. Usually measured as the percentage of users who return after their first visit/action.
+
+**Stickiness** — How often users return to your product. Commonly measured as DAU/MAU ratio—what percentage of monthly users engage daily.
+
+---
+
+## Internal Linking Suggestions
+
+1. **"How to set up PostHog for your SaaS"** — Technical setup guide (link from "Getting Started" section)
+2. **"Understanding user retention: A complete guide"** — Deep-dive on retention analysis (link from Retention metric)
+3. **"Feature flags best practices"** — Guide to using flags effectively (link from Feature Adoption section)
+
+## Featured Snippet Target
+
+**Target query:** "What is stickiness in product analytics?"
+
+**Snippet-optimized answer:**
+
+> **Stickiness** measures how habit-forming your product is. It's calculated as DAU (Daily Active Users) divided by MAU (Monthly Active Users), expressed as a percentage. A stickiness ratio of 20% means 20% of your monthly users engage with your product every day. The SaaS industry average is 13%. Higher stickiness indicates users can't live without your product.
+
+---

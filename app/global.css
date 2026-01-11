@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 
 ::selection {
   background-color: #47a3f3;
@@ -6,23 +7,30 @@
 }
 
 :root {
-  --sh-class: #2d5e9d;
-  --sh-identifier: #354150;
-  --sh-sign: #8996a3;
-  --sh-string: #007f7a;
-  --sh-keyword: #e02518;
-  --sh-comment: #a19595;
-  --sh-jsxliterals: #6266d1;
-  --sh-property: #e25a1c;
-  --sh-entity: #e25a1c;
+  /* Light theme syntax colors */
+  --sh-class: #0550ae;
+  --sh-identifier: #24292f;
+  --sh-sign: #6e7781;
+  --sh-string: #0a3069;
+  --sh-keyword: #cf222e;
+  --sh-comment: #6e7781;
+  --sh-jsxliterals: #8250df;
+  --sh-property: #953800;
+  --sh-entity: #116329;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --sh-class: #4c97f8;
-    --sh-identifier: white;
-    --sh-keyword: #f47067;
-    --sh-string: #0fa295;
+    /* Dark theme syntax colors - Dracula */
+    --sh-class: #8be9fd;
+    --sh-identifier: #f8f8f2;
+    --sh-sign: #6272a4;
+    --sh-string: #50fa7b;
+    --sh-keyword: #ff79c6;
+    --sh-comment: #6272a4;
+    --sh-jsxliterals: #bd93f9;
+    --sh-property: #ffb86c;
+    --sh-entity: #f1fa8c;
   }
   html {
     color-scheme: dark;
@@ -35,7 +43,6 @@ html {
 
 .prose .anchor {
   @apply absolute invisible no-underline;
-
   margin-left: -1em;
   padding-right: 0.5em;
   width: 80%;
@@ -48,7 +55,7 @@ html {
 }
 
 .prose a {
-  @apply underline transition-all decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2 decoration-[0.1em];
+  @apply font-medium text-blue-600 dark:text-blue-400 no-underline hover:underline underline-offset-4 decoration-blue-600/30 dark:decoration-blue-400/30 transition-colors;
 }
 
 .prose .anchor:after {
@@ -60,65 +67,163 @@ html {
   @apply visible;
 }
 
+/* Code blocks - Light/Dark adaptive */
 .prose pre {
-  @apply bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-900 py-2 px-3 text-sm;
+  background-color: #fafafa;
+  @apply rounded-xl overflow-x-auto border border-neutral-200 py-4 px-4 text-sm my-6;
 }
 
-.prose code {
-  @apply px-1 py-0.5 rounded-lg;
+@media (prefers-color-scheme: dark) {
+  .prose pre {
+    background-color: #171717;
+    @apply border-neutral-700;
+  }
 }
 
 .prose pre code {
-  @apply p-0;
+  @apply p-0 bg-transparent text-neutral-800 dark:text-neutral-100;
   border: initial;
-  line-height: 1.5;
+  line-height: 1.7;
+  font-size: 0.875rem;
+}
+
+/* Inline code - Tailwind docs style */
+.prose code {
+  @apply text-sm font-semibold bg-neutral-100 dark:bg-neutral-800 text-pink-600 dark:text-pink-400 px-1.5 py-0.5 rounded-md border border-neutral-200 dark:border-neutral-700;
+  font-family: var(--font-geist-mono);
+}
+
+/* Override sugar-high colors for inline code */
+.prose code:not(pre code) span {
+  color: inherit !important;
+}
+
+.prose pre code {
+  @apply border-0 bg-transparent p-0;
 }
 
 .prose code span {
-  @apply font-medium;
+  @apply font-normal;
+}
+
+.prose code::before,
+.prose code::after {
+  content: none;
 }
 
 .prose img {
-  /* Don't apply styles to next/image */
-  @apply m-0;
+  @apply m-0 rounded-lg;
 }
 
 .prose p {
-  @apply my-4 text-neutral-800 dark:text-neutral-200;
+  @apply my-5 text-neutral-700 dark:text-neutral-300 leading-7;
 }
 
 .prose h1 {
-  @apply text-4xl font-medium tracking-tight mt-6 mb-2;
+  @apply text-3xl font-bold tracking-tight mt-10 mb-4 text-neutral-900 dark:text-neutral-100;
 }
 
 .prose h2 {
-  @apply text-xl font-medium tracking-tight mt-6 mb-2;
+  @apply text-2xl font-semibold tracking-tight mt-10 mb-4 text-neutral-900 dark:text-neutral-100 pb-2 border-b border-neutral-200 dark:border-neutral-800;
 }
 
 .prose h3 {
-  @apply text-xl font-medium tracking-tight mt-6 mb-2;
+  @apply text-xl font-semibold tracking-tight mt-8 mb-3 text-neutral-900 dark:text-neutral-100;
 }
 
 .prose h4 {
-  @apply text-lg font-medium tracking-tight mt-6 mb-2;
+  @apply text-lg font-semibold tracking-tight mt-6 mb-2 text-neutral-900 dark:text-neutral-100;
 }
 
 .prose strong {
-  @apply font-medium;
+  @apply font-semibold text-neutral-900 dark:text-neutral-100;
 }
 
 .prose ul {
-  @apply list-disc pl-6;
+  @apply list-disc pl-6 my-5 space-y-2;
 }
 
 .prose ol {
-  @apply list-decimal pl-6;
+  @apply list-decimal pl-6 my-5 space-y-2;
+}
+
+.prose li {
+  @apply text-neutral-700 dark:text-neutral-300 leading-7;
+}
+
+.prose li::marker {
+  @apply text-neutral-400 dark:text-neutral-500;
+}
+
+/* Blockquotes - Large quote style */
+.prose blockquote {
+  @apply border-0 pl-12 my-8 not-italic text-neutral-900 dark:text-neutral-100 py-4 relative;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.prose blockquote::before {
+  content: '"';
+  @apply absolute left-0 top-0 text-neutral-300 dark:text-neutral-600;
+  font-size: 5rem;
+  line-height: 1;
+  font-family: Georgia, serif;
+}
+
+.prose blockquote p {
+  @apply my-0;
+}
+
+/* Tables */
+.prose table {
+  @apply w-full text-sm my-6;
+  display: table;
+  table-layout: auto;
+  border-collapse: collapse;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid;
+  @apply border-neutral-200 dark:border-neutral-700;
+}
+
+.prose thead {
+  @apply border-b border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800/50;
+}
+
+.prose th {
+  @apply text-left font-semibold text-neutral-900 dark:text-neutral-100 py-3 px-4 text-xs uppercase tracking-wide;
+}
+
+.prose td {
+  @apply py-3 px-4 text-neutral-700 dark:text-neutral-300 border-b border-neutral-100 dark:border-neutral-800;
+}
+
+.prose tbody tr:last-child td {
+  @apply border-b-0;
+}
+
+.prose tbody tr:hover {
+  @apply bg-neutral-50 dark:bg-neutral-800/50;
+}
+
+/* Horizontal rules */
+.prose hr {
+  @apply my-8 border-neutral-200 dark:border-neutral-800;
 }
 
 .prose > :first-child {
-  /* Override removing top margin, causing layout shift */
-  margin-top: 1.25em !important;
-  margin-bottom: 1.25em !important;
+  margin-top: 0 !important;
+}
+
+/* Scroll margin for anchor links */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  scroll-margin-top: 100px;
 }
 
 pre::-webkit-scrollbar {
@@ -138,13 +243,69 @@ input[type='email'] {
   appearance: none;
 }
 
-table {
-  display: block;
-  max-width: fit-content;
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
 .title {
   text-wrap: balance;
 }
+
+/* Keyboard */
+.prose kbd {
+  @apply text-sm font-medium px-1.5 py-0.5 rounded border;
+  font-family: var(--font-geist-mono);
+  background: linear-gradient(180deg, #fafafa 0%, #e5e7eb 100%);
+  border-color: #d1d5db;
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose kbd {
+    background: linear-gradient(180deg, #3f3f46 0%, #27272a 100%);
+    border-color: #52525b;
+    @apply text-neutral-200;
+  }
+}
+
+/* Mark / Highlight */
+.prose mark {
+  @apply bg-yellow-200 dark:bg-yellow-900/50 text-neutral-900 dark:text-yellow-100 px-1 rounded;
+}
+
+/* Abbreviations */
+.prose abbr {
+  @apply underline decoration-dotted cursor-help;
+}
+
+/* Images with shadow */
+.prose img {
+  @apply rounded-xl shadow-lg my-8;
+}
+
+/* Nested lists spacing */
+.prose ul ul,
+.prose ul ol,
+.prose ol ul,
+.prose ol ol {
+  @apply my-2;
+}
+
+/* Definition lists */
+.prose dl {
+  @apply my-5;
+}
+
+.prose dt {
+  @apply font-semibold text-neutral-900 dark:text-neutral-100 mt-4;
+}
+
+.prose dd {
+  @apply mt-1 pl-4 text-neutral-600 dark:text-neutral-400;
+}
+
+/* Lead paragraph */
+.prose .lead {
+  @apply text-xl text-neutral-600 dark:text-neutral-400 leading-8;
+}
+
+/* Strikethrough */
+.prose del {
+  @apply text-neutral-500 line-through;
+}
+

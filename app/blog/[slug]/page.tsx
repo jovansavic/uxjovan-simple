@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { CustomMDX } from 'app/components/mdx'
 import { formatDate, getBlogPosts } from 'app/blog/utils'
 import { baseUrl } from 'app/sitemap'
+import { TableOfContents } from 'app/components/toc'
 
 export async function generateStaticParams() {
   let posts = getBlogPosts()
@@ -61,7 +62,7 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
   }
 
   return (
-    <section>
+    <section className="relative">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -84,7 +85,13 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
           }),
         }}
       />
-      <h1 className="title font-semibold text-2xl tracking-tighter">
+      
+      {/* Table of Contents - Fixed on right side for xl screens */}
+      <div className="hidden xl:block fixed right-[max(2rem,calc(50%-45rem))] top-32 w-56">
+        <TableOfContents content={post.content} />
+      </div>
+
+      <h1 className="title font-bold text-3xl tracking-tight">
         {post.metadata.title}
       </h1>
       <div className="flex justify-between items-center mt-2 mb-8 text-sm">
@@ -92,7 +99,7 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
           {formatDate(post.metadata.publishedAt)}
         </p>
       </div>
-      <article className="prose">
+      <article className="prose prose-neutral dark:prose-invert max-w-none">
         <CustomMDX source={post.content} />
       </article>
     </section>
