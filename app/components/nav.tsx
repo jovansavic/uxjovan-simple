@@ -2,11 +2,10 @@ import Link from 'next/link'
 import { HiEnvelope } from 'react-icons/hi2'
 
 const emailSubject = encodeURIComponent('Hello from your website!')
-const emailBody = encodeURIComponent(`Hi, Jovan. I was looking at your website and wanted to contact you because of [>WRITE_THE_REASON_HERE<]
-
----
-Best regards,
-[>YOUR_NAME, ANOTHER_CONTACT_INFO_IF_NEEDED<]`)
+const emailBody = encodeURIComponent(`
+  Hi, Jovan. 
+  <br/><br/>
+  I was looking at your website and wanted to contact you because of [>WRITE_THE_REASON_HERE<]`)
 
 const navItems = [
   { path: '/', name: 'home' },
