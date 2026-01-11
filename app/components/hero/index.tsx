@@ -113,7 +113,7 @@ export function Hero() {
           className="inline"
           variants={lineVariants}
           animate={{
-            opacity: hoverState === 'build' ? 0.2 : 1,
+            opacity: hoverState === 'build' ? 0.6  : 1,
           }}
           transition={{ duration: 0.1 }}
         >
@@ -157,9 +157,9 @@ export function Hero() {
           className="inline"
           variants={lineVariants}
           animate={{
-            opacity: hoverState === 'design' ? 0.2 : 1,
+            opacity: hoverState === 'design' ? 0.6  : 1,
           }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.6  }}
         >
           <span>Sometimes, I </span>
           <span className="font-semibold text-pink-600 dark:text-pink-400 transition-colors">

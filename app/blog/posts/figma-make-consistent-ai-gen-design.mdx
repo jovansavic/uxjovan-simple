@@ -1,0 +1,447 @@
+---
+title: Consistent AI-Generated Design Code in Figma Make
+summary: Learn how to enforce strict design token usage in Figma Make using TypeScript-like validation rules in your Guidelines.md file
+keywords: [figma make, design tokens, css variables, ai code generation, design system validation, guidelines.md]
+publishedAt: 2026-01-10
+---
+
+# TypeScript-Style Validation for AI-Generated Design Code in Figma Make
+
+Figma Make's Guidelines.md file lets you enforce strict design token usage in AI-generated code. Think of it like TypeScript for your design system: define what's allowed, and the AI follows your rules.
+
+---
+
+**What you'll learn:**
+
+- How Guidelines.md controls AI code generation
+- The TypeScript mental model for design constraints
+- Ready-to-paste token definitions for colors, typography, radius, shadows
+- Complete validation rules for Card and Text components
+
+**Who this is for:** Designers using Figma Make who want consistent, on-brand code output.
+
+---
+
+## Part 1: How Guidelines.md Works
+
+Figma Make uses Claude Sonnet 4 to generate React + Tailwind CSS code. The AI reads your **Guidelines.md** file before every generation.
+
+### Where to Find It
+
+1. Open your Figma Make file
+2. Click **Code** in the top toolbar
+3. Look for **Guidelines.md** in the file list (left sidebar)
+4. Click to edit directly
+
+### Key Principle
+
+Treat Guidelines.md like onboarding docs for a new engineer. Be specific about what tokens exist, when to use each, and what patterns to avoid.
+
+### What to Include
+
+Based on Figma's official guidance, your Guidelines.md should contain:
+
+| Section | Purpose |
+|---------|---------|
+| Task | What Figma Make should do |
+| Context | Where this fits in your design system |
+| Key Design Elements | Important features to incorporate |
+| Expected Behaviors | What happens on interaction |
+| Constraints | Device, layout, visual styling rules |
+
+---
+
+## Part 2: The TypeScript Mental Model
+
+TypeScript enforces that variables match their declared types. Your design token rules work the same way.
+
+### TypeScript Example
+
+```typescript
+// Only these background values are valid
+type BackgroundColor = '--background' | '--card' | '--primary' | '--muted';
+
+// This would throw an error
+const bg: BackgroundColor = '#ffffff'; // Type error!
+```
+
+### Guidelines.md Equivalent
+
+```markdown
+## Background Colors
+
+ALLOWED values only:
+- var(--background) for page backgrounds
+- var(--card) for card surfaces  
+- var(--primary) for primary action fills
+- var(--muted) for deemphasized areas
+
+FORBIDDEN:
+- Hardcoded colors: #ffffff, rgb(0,0,0)
+- Tailwind utilities: bg-gray-100, bg-neutral-900
+- Arbitrary values: bg-[#123456]
+```
+
+### The Difference
+
+| TypeScript | Guidelines.md |
+|------------|---------------|
+| Compiler throws errors | AI follows instructions |
+| Blocks invalid code | Teaches correct patterns |
+| Automatic enforcement | Requires clear language |
+
+Because Guidelines.md relies on the AI understanding your rules, use unambiguous language. The AI should have zero doubt about what's permitted.
+
+---
+
+## Part 3: Why You Must Define Tokens
+
+Figma Make uses Base UI components as the default starting point. Base UI is a **headless library** — components ship with zero default styles.
+
+### What Base UI Provides
+
+- Accessible component behavior
+- State attributes: `[data-checked]`, `[data-highlighted]`
+- Positioning variables: `--available-height`, `--anchor-width`
+
+### What Base UI Does NOT Provide
+
+- Color palette
+- Typography scale
+- Spacing system
+- Border radius tokens
+- Shadow definitions
+
+Your Guidelines.md supplies the token vocabulary that Base UI intentionally omits.
+
+---
+
+## Part 4: Complete Guidelines.md Template
+
+Copy and paste everything below into your Guidelines.md file. Replace placeholder values with your actual design system tokens.
+
+```markdown
+# Design System Guidelines
+
+This project uses strict design tokens. ALL generated code must follow these rules.
+
+---
+
+## Core Principles
+
+1. Use ONLY CSS variables defined in this design system
+2. Never hardcode colors, spacing, or typography values
+3. Prefer semantic token names over arbitrary values
+4. Generated code must work in both light and dark modes
+
+---
+
+## Color Tokens
+
+### Background Colors
+
+| Token | CSS Variable | Tailwind Class | Use Case |
+|-------|--------------|----------------|----------|
+| Background | var(--background) | bg-background | Page/app background |
+| Card | var(--card) | bg-card | Card surfaces, panels |
+| Popover | var(--popover) | bg-popover | Dropdowns, tooltips |
+| Primary | var(--primary) | bg-primary | Primary buttons, accents |
+| Secondary | var(--secondary) | bg-secondary | Secondary surfaces |
+| Muted | var(--muted) | bg-muted | Deemphasized areas |
+| Accent | var(--accent) | bg-accent | Hover states, highlights |
+| Destructive | var(--destructive) | bg-destructive | Error/delete actions |
+
+### Text Colors
+
+| Token | CSS Variable | Tailwind Class | Use Case |
+|-------|--------------|----------------|----------|
+| Foreground | var(--foreground) | text-foreground | Primary text |
+| Muted Foreground | var(--muted-foreground) | text-muted-foreground | Secondary/helper text |
+| Card Foreground | var(--card-foreground) | text-card-foreground | Text on cards |
+| Primary Foreground | var(--primary-foreground) | text-primary-foreground | Text on primary bg |
+
+### Border Colors
+
+| Token | CSS Variable | Tailwind Class |
+|-------|--------------|----------------|
+| Border | var(--border) | border-border |
+| Input | var(--input) | border-input |
+| Ring | var(--ring) | ring-ring |
+
+---
+
+## Border Radius Tokens
+
+Base variable: --radius (set in your CSS)
+
+| Size | Tailwind Class | Calculation |
+|------|----------------|-------------|
+| Small | rounded-sm | calc(var(--radius) - 4px) |
+| Medium | rounded-md | calc(var(--radius) - 2px) |
+| Large | rounded-lg | var(--radius) |
+| XL | rounded-xl | calc(var(--radius) + 4px) |
+| Full | rounded-full | 9999px (circular only) |
+
+ALLOWED: rounded-sm, rounded-md, rounded-lg, rounded-xl, rounded-full
+
+FORBIDDEN: 
+- Arbitrary values: rounded-[8px], rounded-[1rem]
+- Pixel values: rounded-[12px]
+
+---
+
+## Shadow Tokens
+
+| Level | Tailwind Class | Use Case |
+|-------|----------------|----------|
+| None | shadow-none | Flat surfaces, bordered cards |
+| Small | shadow-sm | Subtle elevation |
+| Default | shadow | Moderate elevation |
+| Medium | shadow-md | Popover, dropdown |
+| Large | shadow-lg | Modal (rare) |
+
+ALLOWED: shadow-none, shadow-sm, shadow, shadow-md, shadow-lg
+
+FORBIDDEN:
+- Arbitrary shadows: shadow-[0_4px_6px_rgba(0,0,0,0.1)]
+- Inline box-shadow styles
+- Custom rgba values
+
+DEFAULT RULE: If uncertain, use shadow-none
+
+---
+
+## Typography Rules
+
+### Heading Scale
+
+| Style | Classes | Use Case |
+|-------|---------|----------|
+| Page Title | text-4xl font-bold leading-tight | H1, main page headers |
+| Section Title | text-2xl font-semibold leading-snug | H2, major sections |
+| Card Title | text-lg font-semibold | H3, card headers |
+| Subsection | text-base font-semibold | H4, minor headings |
+
+### Body Text
+
+| Style | Classes | Use Case |
+|-------|---------|----------|
+| Body | text-base text-foreground | Primary content |
+| Body Small | text-sm text-foreground | Compact layouts |
+| Description | text-sm text-muted-foreground | Helper text, captions |
+| Caption | text-xs text-muted-foreground | Timestamps, metadata |
+
+### Labels
+
+| Style | Classes | Use Case |
+|-------|---------|----------|
+| Form Label | text-sm font-medium | Input labels |
+| Button | text-sm font-medium | Button text |
+| Badge | text-xs font-medium | Status indicators |
+
+### Allowed Values
+
+Font sizes: text-xs, text-sm, text-base, text-lg, text-xl, text-2xl, text-3xl, text-4xl
+
+Font weights: font-normal, font-medium, font-semibold, font-bold
+
+Line heights: leading-tight, leading-snug, leading-normal, leading-relaxed
+
+Text colors: text-foreground, text-muted-foreground
+
+### Forbidden Patterns
+
+| Category | Forbidden | Use Instead |
+|----------|-----------|-------------|
+| Arbitrary size | text-[14px], text-[1.2rem] | text-sm |
+| Arbitrary weight | font-[450], font-[550] | font-medium |
+| Hardcoded gray | text-gray-700, text-slate-600 | text-foreground |
+| Inline style | style={{ fontSize: 16 }} | text-base |
+
+---
+
+## Card Component Rules
+
+### Quick Reference
+
+| Property | Allowed Values |
+|----------|----------------|
+| Background | bg-card, bg-background, bg-muted |
+| Text | text-card-foreground, text-muted-foreground |
+| Radius | rounded-lg (default), rounded-xl (featured) |
+| Border | border border-border, or none |
+| Shadow | shadow-none, shadow-sm, shadow |
+
+### Valid Card Pattern
+
+```tsx
+<div className="bg-card text-card-foreground rounded-lg border border-border p-6">
+  <h3 className="text-lg font-semibold">Card Title</h3>
+  <p className="text-sm text-muted-foreground">Description text</p>
+</div>
+```
+
+### Invalid Card Pattern (DO NOT USE)
+
+```tsx
+<div className="bg-white text-gray-900 rounded-[12px] border-gray-200 p-6">
+  <h3 className="text-lg font-semibold">Card Title</h3>
+  <p className="text-sm text-gray-500">Description text</p>
+</div>
+```
+
+Violations: bg-white, text-gray-900, rounded-[12px], border-gray-200, text-gray-500
+
+---
+
+## Forbidden Patterns Summary
+
+| Category | Examples | Why Forbidden |
+|----------|----------|---------------|
+| Hex colors | #ffffff, #000000, #3b82f6 | Use CSS variables |
+| RGB values | rgb(255,255,255), rgba(0,0,0,0.5) | Use CSS variables |
+| Named colors | white, black, gray, blue | Use CSS variables |
+| Tailwind colors | bg-gray-100, text-slate-600 | Use semantic tokens |
+| Arbitrary values | bg-[#123], text-[14px], rounded-[8px] | Use defined scales |
+| Inline styles | style={{ color: '#000' }} | Use Tailwind classes |
+
+---
+
+## Verification Checklist
+
+Before completing generation, verify:
+
+- All backgrounds use bg-[token] classes
+- All text colors use text-foreground or text-muted-foreground
+- All borders use border-border
+- All radius values from allowed set
+- No hardcoded hex, rgb, or named colors
+- No arbitrary Tailwind values for themed properties
+```
+
+---
+
+## Part 5: Your CSS Variables Reference
+
+Your Guidelines.md references CSS variables that must be defined in your stylesheet. Here's the complete set:
+
+```css
+:root {
+  --radius: 0.625rem;
+  
+  /* Backgrounds */
+  --background: oklch(1 0 0);
+  --card: oklch(1 0 0);
+  --popover: oklch(1 0 0);
+  --primary: oklch(0.205 0 0);
+  --secondary: oklch(0.97 0 0);
+  --muted: oklch(0.97 0 0);
+  --accent: oklch(0.97 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  
+  /* Foregrounds */
+  --foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  
+  /* Borders */
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  /* Add remaining dark mode tokens */
+}
+```
+
+Replace the OKLCH values with your actual design system colors.
+
+---
+
+## Part 6: Pro Tips from Figma's Team
+
+These tips come directly from Figma's designer advocates who built Figma Make.
+
+### Tip 1: Front-Load Your First Prompt
+
+The more detail in your initial prompt, the fewer follow-ups needed. Include:
+
+- Task (what to build)
+- Context (where it fits)
+- Key design elements
+- Expected behaviors
+- Constraints (device, layout, styling)
+
+### Tip 2: If It's Not Working, Rephrase
+
+Instead of: `vertically align two elements`
+
+Try: `move this element down 20 pixels` or `add 16px of space between these buttons`
+
+### Tip 3: Start Fresh When Needed
+
+If you're making too many adjustments, create a new Make file. Use learnings from your first attempt to write a better starting prompt.
+
+### Tip 4: Break Complex Projects Into Steps
+
+The smaller the scope, the better the output. Build complex interfaces gradually:
+
+- Establish foundation with detailed first prompt
+- Make small changes incrementally
+- Build multi-page flows frame by frame
+
+### Tip 5: Use Point and Edit for Visual Tweaks
+
+Select elements directly to adjust:
+
+- Color
+- Corner radius  
+- Spacing
+- Typography
+
+### Tip 6: Jump to Source Code
+
+Click "go to source" to find code behind any element. Figma Make labels code clearly — you can adjust values even without coding experience. Changes reflect immediately in preview.
+
+### Tip 7: Use Make as a Handoff Tool
+
+Prompt Make to output production-ready code snippets. Example from Figma's team: an OKLCH Palette Builder that generates CSS Variables and Tailwind CSS output ready for developers.
+
+---
+
+## Part 7: Limitations
+
+Guidelines.md is **instructional, not enforcement-based**. The AI follows your rules but nothing blocks non-compliant output automatically.
+
+For production projects:
+
+- Review generated code manually
+- Export and run Stylelint with custom rules
+- Use `stylelint-declaration-strict-value` plugin to enforce CSS variable usage post-export
+
+---
+
+## Glossary
+
+**Base UI** — Headless React component library with no default styles, used as Figma Make's foundation.
+
+**CSS Variables** — Custom properties (--name) that store reusable values across your stylesheet.
+
+**Design Tokens** — Named values representing design decisions (colors, spacing, typography) that can be consumed across platforms.
+
+**Guidelines.md** — Markdown file in Figma Make that instructs the AI how to generate code.
+
+**Headless Component** — UI component providing behavior and accessibility without visual styling.
+
+**OKLCH** — Color format using Lightness, Chroma, and Hue values for perceptually uniform color manipulation.
+
+**Semantic Token** — Token named by purpose (--primary) rather than value (--blue-500).

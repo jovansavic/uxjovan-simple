@@ -3,6 +3,8 @@ import { CustomMDX } from 'app/components/mdx'
 import { formatDate, getBlogPosts } from 'app/blog/utils'
 import { baseUrl } from 'app/sitemap'
 import { TableOfContents } from 'app/components/toc'
+import { MobileTableOfContents } from 'app/components/toc/mobile'
+import { Breadcrumbs } from 'app/components/breadcrumbs'
 
 export async function generateStaticParams() {
   let posts = getBlogPosts()
@@ -62,7 +64,7 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
   }
 
   return (
-    <section className="relative">
+    <section className="relative pb-20 xl:pb-0">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -90,6 +92,12 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
       <div className="hidden xl:block fixed right-[max(2rem,calc(50%-45rem))] top-32 w-56">
         <TableOfContents content={post.content} />
       </div>
+
+      {/* Mobile Table of Contents - Bottom sheet */}
+      <MobileTableOfContents content={post.content} />
+
+      {/* Breadcrumbs */}
+      <Breadcrumbs currentTitle={post.metadata.title} />
 
       <h1 className="title font-bold text-3xl tracking-tight">
         {post.metadata.title}

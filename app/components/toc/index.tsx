@@ -80,10 +80,10 @@ export function TableOfContents({ content }: { content: string }) {
   return (
     <nav className="toc hidden xl:block">
       <div className="sticky top-24">
-        <h4 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mb-4">
+        <h4 className="text-xs font-semibold text-neutral-900 dark:text-neutral-100 mb-3 uppercase tracking-wide">
           On this page
         </h4>
-        <ul className="space-y-2 text-sm">
+        <ul className="space-y-1.5 text-xs">
           {headings.map(({ id, text, level }) => (
             <li
               key={id}

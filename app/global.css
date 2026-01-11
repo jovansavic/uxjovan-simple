@@ -39,6 +39,11 @@
 
 html {
   min-width: 360px;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 .prose .anchor {
@@ -96,6 +101,19 @@ html {
 /* Override sugar-high colors for inline code */
 .prose code:not(pre code) span {
   color: inherit !important;
+}
+
+/* ========================================
+   Global Focus Group Effect
+   Usage: Add .focus-group to parent, .focus-item to children
+   When any child is hovered, siblings fade to 20% opacity
+   ======================================== */
+.focus-group:has(.focus-item:hover) .focus-item:not(:hover) {
+  opacity: 0.6;
+}
+
+.focus-item {
+  transition: opacity 150ms ease-out;
 }
 
 .prose pre code {

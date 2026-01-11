@@ -1,24 +1,29 @@
 import Link from 'next/link'
 import { formatDate, getBlogPosts } from 'app/blog/utils'
 
-export function BlogPosts() {
+interface BlogPostsProps {
+  limit?: number
+}
+
+export function BlogPosts({ limit }: BlogPostsProps) {
   let allBlogs = getBlogPosts()
+  
+  const sortedBlogs = allBlogs.sort((a, b) => {
+    if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) {
+      return -1
+    }
+    return 1
+  })
+  
+  const displayedBlogs = limit ? sortedBlogs.slice(0, limit) : sortedBlogs
+  const hasMore = limit && sortedBlogs.length > limit
 
   return (
     <div className="flex flex-col gap-1">
-      {allBlogs
-        .sort((a, b) => {
-          if (
-            new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
-          ) {
-            return -1
-          }
-          return 1
-        })
-        .map((post) => (
+      {displayedBlogs.map((post) => (
           <Link
             key={post.slug}
-            className="group block py-4 -mx-4 px-4 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors"
+            className="focus-item group block py-4 -mx-4 px-4 rounded-xl"
             href={`/blog/${post.slug}`}
           >
             <div className="flex flex-col gap-1">
@@ -38,14 +43,20 @@ export function BlogPosts() {
                   {post.metadata.summary}
                 </p>
               )}
-              
-              {/* Read more link */}
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                Read article →
-              </span>
             </div>
           </Link>
         ))}
+      
+      {hasMore && (
+        <Link
+          href="/blog"
+          className="focus-item group block py-4 -mx-4 px-4 rounded-xl"
+        >
+          <span className="text-sm font-medium text-neutral-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            See more →
+          </span>
+        </Link>
+      )}
     </div>
   )
 }
