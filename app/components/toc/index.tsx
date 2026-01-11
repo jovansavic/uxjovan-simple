@@ -13,20 +13,34 @@ export function TableOfContents({ content }: { content: string }) {
   const [activeId, setActiveId] = useState<string>('')
 
   useEffect(() => {
+    // Remove code blocks before parsing headings
+    const contentWithoutCodeBlocks = content.replace(/```[\s\S]*?```/g, '')
+    
     // Parse headings from markdown content
     const headingRegex = /^(#{2,3})\s+(.+)$/gm
     const matches: TocItem[] = []
+    const seenIds = new Set<string>()
     let match
 
-    while ((match = headingRegex.exec(content)) !== null) {
+    while ((match = headingRegex.exec(contentWithoutCodeBlocks)) !== null) {
       const level = match[1].length
       const text = match[2].trim()
-      const id = text
+      let id = text
         .toLowerCase()
         .replace(/\s+/g, '-')
         .replace(/&/g, '-and-')
         .replace(/[^\w\-]+/g, '')
         .replace(/\-\-+/g, '-')
+
+      // Deduplicate IDs
+      if (seenIds.has(id)) {
+        let counter = 2
+        while (seenIds.has(`${id}-${counter}`)) {
+          counter++
+        }
+        id = `${id}-${counter}`
+      }
+      seenIds.add(id)
 
       matches.push({ id, text, level })
     }

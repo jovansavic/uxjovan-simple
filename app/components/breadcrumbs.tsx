@@ -32,54 +32,60 @@ export function Breadcrumbs({ currentTitle }: BreadcrumbsProps) {
   const currentLabel = currentTitle || segments[segments.length - 1]
 
   return (
-    <div className="sticky top-0 z-40 -mx-6 mb-4 bg-white dark:bg-black">
-      <nav className="px-6 py-3">
-        <div className="flex items-center gap-3 text-sm">
-        {/* Back button with icon and text */}
-        <Link
-          href={backHref}
-          className="flex items-center gap-1.5 text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
-        >
-          <span>←</span>
-          <span>Back</span>
-        </Link>
-
-        {/* Divider */}
-        <span className="text-neutral-300 dark:text-neutral-700">|</span>
-
-        {/* Breadcrumb path */}
-        <div className="flex items-center gap-2 overflow-hidden">
-          {/* Home */}
+    <>
+      {/* Spacer to prevent content jump */}
+      <div className="h-12" />
+      
+      {/* Fixed breadcrumb bar */}
+      <div className="fixed top-0 left-0 right-0 z-40 bg-white dark:bg-black border-b border-neutral-100 dark:border-neutral-900">
+        <nav className="max-w-xl mx-auto px-4 py-3">
+          <div className="flex items-center gap-3 text-sm">
+          {/* Back button with icon and text */}
           <Link
-            href="/"
-            className="text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors shrink-0"
+            href={backHref}
+            className="flex items-center gap-1.5 text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
           >
-            Home
+            <span>←</span>
+            <span>Back</span>
           </Link>
 
-          {/* Middle segments */}
-          {items.map(({ href, label }) => (
-            <span key={href} className="flex items-center gap-2 shrink-0">
-              <span className="text-neutral-300 dark:text-neutral-600">/</span>
-              <Link
-                href={href}
-                className="text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
-              >
-                {label}
-              </Link>
-            </span>
-          ))}
+          {/* Divider */}
+          <span className="text-neutral-300 dark:text-neutral-700">|</span>
 
-          {/* Current page */}
-          <span className="flex items-center gap-2 min-w-0">
-            <span className="text-neutral-300 dark:text-neutral-600 shrink-0">/</span>
-            <span className="text-neutral-900 dark:text-neutral-100 font-medium truncate">
-              {currentLabel}
+          {/* Breadcrumb path */}
+          <div className="flex items-center gap-2 overflow-hidden">
+            {/* Home */}
+            <Link
+              href="/"
+              className="text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors shrink-0"
+            >
+              Home
+            </Link>
+
+            {/* Middle segments */}
+            {items.map(({ href, label }) => (
+              <span key={href} className="flex items-center gap-2 shrink-0">
+                <span className="text-neutral-300 dark:text-neutral-600">/</span>
+                <Link
+                  href={href}
+                  className="text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+                >
+                  {label}
+                </Link>
+              </span>
+            ))}
+
+            {/* Current page */}
+            <span className="flex items-center gap-2 min-w-0">
+              <span className="text-neutral-300 dark:text-neutral-600 shrink-0">/</span>
+              <span className="text-neutral-900 dark:text-neutral-100 font-medium truncate">
+                {currentLabel}
+              </span>
             </span>
-          </span>
-        </div>
-        </div>
-      </nav>
-    </div>
+          </div>
+          </div>
+        </nav>
+      </div>
+    </>
   )
 }
