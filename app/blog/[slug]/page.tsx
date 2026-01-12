@@ -18,31 +18,45 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   let post = getBlogPosts().find((post) => post.slug === slug)
   if (!post) {
-    return
+    return {}
   }
 
-  let {
+  const {
     title,
     publishedAt: publishedTime,
     summary: description,
     image,
   } = post.metadata
-  let ogImage = image
-    ? image
+  const postKeywords = (post.metadata as { keywords?: string }).keywords
+  const ogImage = image
+    ? image.startsWith('http') ? image : `${baseUrl}${image}`
     : `${baseUrl}/og?title=${encodeURIComponent(title)}`
 
   return {
     title,
     description,
+    keywords: postKeywords ? postKeywords.split(',').map(k => k.trim()) : ['Design', 'UX', 'UI', 'Product Design'],
+    authors: [{ name: 'Jovan Sremacki', url: 'https://jovan.design' }],
+    creator: 'Jovan Sremacki',
+    publisher: 'Jovan Sremacki',
+    alternates: {
+      canonical: `${baseUrl}/blog/${post.slug}`,
+    },
     openGraph: {
       title,
       description,
       type: 'article',
       publishedTime,
+      modifiedTime: publishedTime,
       url: `${baseUrl}/blog/${post.slug}`,
+      siteName: 'Jovan Sremacki',
+      authors: ['Jovan Sremacki'],
       images: [
         {
           url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: title,
         },
       ],
     },
@@ -51,6 +65,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title,
       description,
       images: [ogImage],
+      creator: '@uxjovan',
+      site: '@uxjovan',
+    },
+    other: {
+      'article:published_time': publishedTime,
+      'article:author': 'Jovan Sremacki',
     },
   }
 }
@@ -72,17 +92,53 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'BlogPosting',
+            '@id': `${baseUrl}/blog/${post.slug}#article`,
             headline: post.metadata.title,
+            name: post.metadata.title,
+            description: post.metadata.summary,
             datePublished: post.metadata.publishedAt,
             dateModified: post.metadata.publishedAt,
-            description: post.metadata.summary,
-            image: post.metadata.image
-              ? `${baseUrl}${post.metadata.image}`
-              : `/og?title=${encodeURIComponent(post.metadata.title)}`,
+            image: {
+              '@type': 'ImageObject',
+              url: post.metadata.image
+                ? (post.metadata.image.startsWith('http') ? post.metadata.image : `${baseUrl}${post.metadata.image}`)
+                : `${baseUrl}/og?title=${encodeURIComponent(post.metadata.title)}`,
+              width: 1200,
+              height: 630,
+            },
             url: `${baseUrl}/blog/${post.slug}`,
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': `${baseUrl}/blog/${post.slug}`,
+            },
             author: {
               '@type': 'Person',
-              name: 'My Portfolio',
+              '@id': `${baseUrl}/#person`,
+              name: 'Jovan Sremacki',
+              url: 'https://jovan.design',
+              sameAs: [
+                'https://x.com/uxjovan',
+                'https://linkedin.com/in/uxjovan',
+                'https://figma.com/@uxjovan',
+              ],
+            },
+            publisher: {
+              '@type': 'Person',
+              '@id': `${baseUrl}/#person`,
+              name: 'Jovan Sremacki',
+              url: baseUrl,
+            },
+            isPartOf: {
+              '@type': 'Blog',
+              '@id': `${baseUrl}/blog#blog`,
+              name: 'Jovan Sremacki Blog',
+              url: `${baseUrl}/blog`,
+            },
+            inLanguage: 'en-US',
+            copyrightYear: new Date(post.metadata.publishedAt).getFullYear(),
+            copyrightHolder: {
+              '@type': 'Person',
+              name: 'Jovan Sremacki',
             },
           }),
         }}

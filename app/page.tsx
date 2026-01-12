@@ -1,5 +1,14 @@
 import { BlogPosts } from 'app/components/posts'
 import { Hero } from 'app/components/hero'
+import { Metadata } from 'next'
+import { baseUrl } from 'app/sitemap'
+
+// Homepage uses default metadata from layout.tsx but we can add page-specific structured data
+export const metadata: Metadata = {
+  alternates: {
+    canonical: baseUrl,
+  },
+}
 
 export default function Page() {
   return (
