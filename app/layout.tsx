@@ -112,6 +112,21 @@ export const metadata: Metadata = {
     // bing: 'your-bing-verification-token',
   },
   category: 'technology',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      { rel: 'android-chrome', url: '/android-chrome-192x192.png', sizes: '192x192' },
+      { rel: 'android-chrome', url: '/android-chrome-512x512.png', sizes: '512x512' },
+    ],
+  },
+  manifest: '/manifest.webmanifest',
   other: {
     // LLM and AI crawler friendly metadata
     'ai-content-declaration': 'human-created',
@@ -224,9 +239,6 @@ export default function RootLayout({
         {/* Preconnect for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Favicon and icons */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         {/* RSS feed autodiscovery */}
         <link rel="alternate" type="application/rss+xml" title="Jovan Savic's Notes" href={`${baseUrl}/rss`} />
       </head>
