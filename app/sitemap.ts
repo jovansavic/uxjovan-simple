@@ -1,11 +1,11 @@
-import { getBlogPosts } from 'app/blog/utils'
+import { getNotesPosts } from 'app/notes/utils'
 import type { MetadataRoute } from 'next'
 
 export const baseUrl = 'https://www.uxjovan.com'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const blogs = getBlogPosts().map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
+  const notess = getNotesPosts().map((post) => ({
+    url: `${baseUrl}/notes/${post.slug}`,
     lastModified: new Date(post.metadata.publishedAt),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
@@ -19,12 +19,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/blog`,
+      url: `${baseUrl}/notes`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
     },
   ]
 
-  return [...routes, ...blogs]
+  return [...routes, ...notess]
 }

@@ -9,7 +9,7 @@ const emailBody = encodeURIComponent(`
 
 const navItems = [
   { path: '/', name: 'home' },
-  { path: '/blog', name: 'blog' },
+  { path: '/notes', name: 'notes' },
 ]
 
 export function Navbar() {

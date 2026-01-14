@@ -1,13 +1,13 @@
 import { notFound } from 'next/navigation'
 import { CustomMDX } from 'app/components/mdx'
-import { formatDate, getBlogPosts } from 'app/blog/utils'
+import { formatDate, getNotesPosts } from 'app/notes/utils'
 import { baseUrl } from 'app/sitemap'
 import { TableOfContents } from 'app/components/toc'
 import { MobileTableOfContents } from 'app/components/toc/mobile'
 import { Breadcrumbs } from 'app/components/breadcrumbs'
 
 export async function generateStaticParams() {
-  let posts = getBlogPosts()
+  let posts = getNotesPosts()
 
   return posts.map((post) => ({
     slug: post.slug,
@@ -16,7 +16,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  let post = getBlogPosts().find((post) => post.slug === slug)
+  let post = getNotesPosts().find((post) => post.slug === slug)
   if (!post) {
     return {}
   }
@@ -36,11 +36,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title,
     description,
     keywords: postKeywords ? postKeywords.split(',').map(k => k.trim()) : ['Design', 'UX', 'UI', 'Product Design'],
-    authors: [{ name: 'Jovan Sremacki', url: 'https://jovan.design' }],
-    creator: 'Jovan Sremacki',
-    publisher: 'Jovan Sremacki',
+    authors: [{ name: 'Jovan Savic', url: 'https://jovan.design' }],
+    creator: 'Jovan Savic',
+    publisher: 'Jovan Savic',
     alternates: {
-      canonical: `${baseUrl}/blog/${post.slug}`,
+      canonical: `${baseUrl}/notes/${post.slug}`,
     },
     openGraph: {
       title,
@@ -48,9 +48,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       type: 'article',
       publishedTime,
       modifiedTime: publishedTime,
-      url: `${baseUrl}/blog/${post.slug}`,
-      siteName: 'Jovan Sremacki',
-      authors: ['Jovan Sremacki'],
+      url: `${baseUrl}/notes/${post.slug}`,
+      siteName: 'Jovan Savic',
+      authors: ['Jovan Savic'],
       images: [
         {
           url: ogImage,
@@ -70,14 +70,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     other: {
       'article:published_time': publishedTime,
-      'article:author': 'Jovan Sremacki',
+      'article:author': 'Jovan Savic',
     },
   }
 }
 
-export default async function Blog({ params }: { params: Promise<{ slug: string }> }) {
+export default async function Notes({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  let post = getBlogPosts().find((post) => post.slug === slug)
+  let post = getNotesPosts().find((post) => post.slug === slug)
 
   if (!post) {
     notFound()
@@ -91,8 +91,8 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             '@context': 'https://schema.org',
-            '@type': 'BlogPosting',
-            '@id': `${baseUrl}/blog/${post.slug}#article`,
+            '@type': 'NotesPosting',
+            '@id': `${baseUrl}/notes/${post.slug}#article`,
             headline: post.metadata.title,
             name: post.metadata.title,
             description: post.metadata.summary,
@@ -106,15 +106,15 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
               width: 1200,
               height: 630,
             },
-            url: `${baseUrl}/blog/${post.slug}`,
+            url: `${baseUrl}/notes/${post.slug}`,
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': `${baseUrl}/blog/${post.slug}`,
+              '@id': `${baseUrl}/notes/${post.slug}`,
             },
             author: {
               '@type': 'Person',
               '@id': `${baseUrl}/#person`,
-              name: 'Jovan Sremacki',
+              name: 'Jovan Savic',
               url: 'https://jovan.design',
               sameAs: [
                 'https://x.com/uxjovan',
@@ -125,20 +125,20 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
             publisher: {
               '@type': 'Person',
               '@id': `${baseUrl}/#person`,
-              name: 'Jovan Sremacki',
+              name: 'Jovan Savic',
               url: baseUrl,
             },
             isPartOf: {
-              '@type': 'Blog',
-              '@id': `${baseUrl}/blog#blog`,
-              name: 'Jovan Sremacki Blog',
-              url: `${baseUrl}/blog`,
+              '@type': 'Notes',
+              '@id': `${baseUrl}/notes#notes`,
+              name: 'Jovan Savic Notes',
+              url: `${baseUrl}/notes`,
             },
             inLanguage: 'en-US',
             copyrightYear: new Date(post.metadata.publishedAt).getFullYear(),
             copyrightHolder: {
               '@type': 'Person',
-              name: 'Jovan Sremacki',
+              name: 'Jovan Savic',
             },
           }),
         }}
@@ -153,7 +153,7 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
       <MobileTableOfContents content={post.content} />
 
       {/* Breadcrumbs */}
-      <Breadcrumbs currentTitle={post.metadata.title} />
+      <Breadcrumbs currentTitle={post.metadata.shortTitle || post.metadata.title} />
 
       <h1 className="title font-bold text-3xl tracking-tight">
         {post.metadata.title}

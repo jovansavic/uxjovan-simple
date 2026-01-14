@@ -1,4 +1,4 @@
-import { BlogPosts } from 'app/components/posts'
+import { NotesPosts } from 'app/components/posts'
 import { Hero } from 'app/components/hero'
 import { Metadata } from 'next'
 import { baseUrl } from 'app/sitemap'
@@ -24,7 +24,7 @@ export default function Page() {
       </div>
 
       <div className="my-8">
-        <BlogPosts limit={3} />
+        <NotesPosts limit={3} />
       </div>
     </section>
   )

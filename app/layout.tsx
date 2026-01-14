@@ -9,11 +9,11 @@ import Footer from './components/footer'
 import { baseUrl } from './sitemap'
 
 const siteConfig = {
-  name: 'Jovan Sremacki',
-  title: 'Jovan Sremacki — Product (UX/UI) Designer',
+  name: 'Jovan Savic',
+  title: 'Jovan Savic — Product (UX/UI) Designer',
   description: 'Product Designer specializing in UX/UI design, design systems, and user research. Creating intuitive digital experiences with Figma, React, and modern design tools. Based in Serbia, available worldwide.',
   url: baseUrl,
-  ogImage: `${baseUrl}/og?title=Jovan%20Sremacki%20—%20Product%20Designer`,
+  ogImage: `${baseUrl}/og?title=Jovan%20Savic%20—%20Product%20Designer`,
   links: {
     twitter: 'https://x.com/uxjovan',
     github: 'https://github.com/uxjovan',
@@ -23,7 +23,7 @@ const siteConfig = {
     behance: 'https://behance.net/uxjovan',
   },
   author: {
-    name: 'Jovan Sremacki',
+    name: 'Jovan Savic',
     email: 'hi@uxjovan.com',
     url: 'https://jovan.design',
   },
@@ -133,7 +133,7 @@ export default function RootLayout({
         '@type': 'WebSite',
         '@id': `${baseUrl}/#website`,
         url: baseUrl,
-        name: 'Jovan Sremacki',
+        name: 'Jovan Savic',
         description: 'Product Designer specializing in UX/UI design, design systems, and user research.',
         publisher: {
           '@id': `${baseUrl}/#person`,
@@ -142,7 +142,7 @@ export default function RootLayout({
           '@type': 'SearchAction',
           target: {
             '@type': 'EntryPoint',
-            urlTemplate: `${baseUrl}/blog?q={search_term_string}`,
+            urlTemplate: `${baseUrl}/notes?q={search_term_string}`,
           },
           'query-input': 'required name=search_term_string',
         },
@@ -151,13 +151,13 @@ export default function RootLayout({
       {
         '@type': 'Person',
         '@id': `${baseUrl}/#person`,
-        name: 'Jovan Sremacki',
+        name: 'Jovan Savic',
         alternateName: ['uxjovan', 'Jovan'],
         description: 'Product Designer specializing in UX/UI design, design systems, and user research. Creating intuitive digital experiences.',
         url: baseUrl,
         image: {
           '@type': 'ImageObject',
-          url: `${baseUrl}/og?title=Jovan%20Sremacki`,
+          url: `${baseUrl}/og?title=Jovan%20Savic`,
           width: 1200,
           height: 630,
         },
@@ -193,7 +193,7 @@ export default function RootLayout({
         '@type': 'ProfilePage',
         '@id': `${baseUrl}/#profilepage`,
         url: baseUrl,
-        name: 'Jovan Sremacki — Product Designer',
+        name: 'Jovan Savic — Product Designer',
         isPartOf: {
           '@id': `${baseUrl}/#website`,
         },
@@ -228,7 +228,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         {/* RSS feed autodiscovery */}
-        <link rel="alternate" type="application/rss+xml" title="Jovan Sremacki's Blog" href={`${baseUrl}/rss`} />
+        <link rel="alternate" type="application/rss+xml" title="Jovan Savic's Notes" href={`${baseUrl}/rss`} />
       </head>
       <body className="antialiased max-w-xl mx-auto px-4 mt-8">
         <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">

@@ -1,30 +1,30 @@
 import Link from 'next/link'
-import { formatDate, getBlogPosts } from 'app/blog/utils'
+import { formatDate, getNotesPosts } from 'app/notes/utils'
 
-interface BlogPostsProps {
+interface NotesPostsProps {
   limit?: number
 }
 
-export function BlogPosts({ limit }: BlogPostsProps) {
-  let allBlogs = getBlogPosts()
+export function NotesPosts({ limit }: NotesPostsProps) {
+  let allNotess = getNotesPosts()
   
-  const sortedBlogs = allBlogs.sort((a, b) => {
+  const sortedNotess = allNotess.sort((a, b) => {
     if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) {
       return -1
     }
     return 1
   })
   
-  const displayedBlogs = limit ? sortedBlogs.slice(0, limit) : sortedBlogs
-  const hasMore = limit && sortedBlogs.length > limit
+  const displayedNotess = limit ? sortedNotess.slice(0, limit) : sortedNotess
+  const hasMore = limit && sortedNotess.length > limit
 
   return (
     <div className="flex flex-col gap-1">
-      {displayedBlogs.map((post) => (
+      {displayedNotess.map((post) => (
           <Link
             key={post.slug}
             className="focus-item group block py-4 -mx-4 px-4 rounded-xl"
-            href={`/blog/${post.slug}`}
+            href={`/notes/${post.slug}`}
           >
             <div className="flex flex-col gap-1">
               {/* Date - smallest, most muted */}
@@ -49,7 +49,7 @@ export function BlogPosts({ limit }: BlogPostsProps) {
       
       {hasMore && (
         <Link
-          href="/blog"
+          href="/notes"
           className="focus-item group block py-4 -mx-4 px-4 rounded-xl"
         >
           <span className="text-sm font-medium text-neutral-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">

@@ -16,7 +16,7 @@ export function Breadcrumbs({ currentTitle }: BreadcrumbsProps) {
   const [isStuck, setIsStuck] = useState(false)
 
   // Only show breadcrumbs on nested pages (depth >= 2)
-  // e.g., /blog/article-slug but NOT /blog or /
+  // e.g., /notes/article-slug but NOT /notes or /
   if (segments.length < 2) {
     return null
   }
