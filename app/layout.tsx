@@ -7,6 +7,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Footer from './components/footer'
 import { baseUrl } from './sitemap'
+import { PostHogProvider } from './providers/posthog'
 
 const siteConfig = {
   name: 'Jovan Savic',
@@ -114,16 +115,16 @@ export const metadata: Metadata = {
   category: 'technology',
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon/favicon.ico', sizes: 'any' },
+      { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
     ],
     apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/favicon/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
     other: [
-      { rel: 'android-chrome', url: '/android-chrome-192x192.png', sizes: '192x192' },
-      { rel: 'android-chrome', url: '/android-chrome-512x512.png', sizes: '512x512' },
+      { rel: 'android-chrome', url: '/favicon/android-chrome-192x192.png', sizes: '192x192' },
+      { rel: 'android-chrome', url: '/favicon/android-chrome-512x512.png', sizes: '512x512' },
     ],
   },
   manifest: '/manifest.webmanifest',
@@ -243,13 +244,15 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="Jovan Savic's Notes" href={`${baseUrl}/rss`} />
       </head>
       <body className="antialiased max-w-xl mx-auto px-4 mt-8">
-        <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
-          <Navbar />
-          {children}
-          <Footer />
-          <Analytics />
-          <SpeedInsights />
-        </main>
+        <PostHogProvider>
+          <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
+            <Navbar />
+            {children}
+            <Footer />
+            <Analytics />
+            <SpeedInsights />
+          </main>
+        </PostHogProvider>
       </body>
     </html>
   )
